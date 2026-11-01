@@ -27,7 +27,8 @@ To quickly install and run the code put these 2 lines of code in the terminal:
         pip install pipboy-os
         python -m pip_boy_os.modules.setup_assets
         python -m pip_boy_os.modules.main
-
+        
+![Prenentation Gif](https://raw.githubusercontent.com/Danger2007/Survival-PC-3000/main/Software/documentation/screenshots/Proof-shit-works.gif )
 
 ## Preparations for Running the Sourcecode
 If you install the source code before running the Pip-Boy OS for the first time locally you'll need to run the file **init** (init.bash if you are using windows; init.sh if you're using linux) these files create various vital files and folders in the Pip-Boy OS (it generates the '**cache**' folder and the '**settings_secret**' file). **In case init doesn't compile/run**: you have to manually add the cache folder with inside 2 folders named '**map**' and '**places**' and you have to add a Python file inside **modules** called '**settings_secret**' with these lines of code.
