@@ -1,3 +1,1 @@
-dist
-documentation
 pip_boy_os

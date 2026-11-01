@@ -1,11 +1,11 @@
 Metadata-Version: 2.4
 Name: pipboy-os
-Version: 1.0.5
+Version: 1.0.6
 Summary: Pip-Boy OS - A Fallout interface built with Python and Pygame.
 Author: DanieleM
-License-Expression: MIT
+License: MIT
 Description-Content-Type: text/markdown
-License-File: LICENSE.txt
+License-File: LICENSE
 Requires-Dist: numpy>=2.0.0
 Requires-Dist: Pillow>=11.0.0
 Requires-Dist: pygame-ce>=2.5.5

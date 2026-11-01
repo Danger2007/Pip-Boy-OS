@@ -14,3 +14,8 @@ modules/cpp/build/
 .vscode/
 objs/items/
 objs/models_out/
+dist/
+build/
+*.egg-info/
+.venv/
+__pycache__/

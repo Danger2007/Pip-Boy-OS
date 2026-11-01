@@ -1,5 +1,5 @@
-LICENSE.txt
-README (Pip-Boy OS).md
+LICENSE
+README.md
 pyproject.toml
 pip_boy_os/fonts/Roboto-Bold.ttf
 pip_boy_os/fonts/Roboto-Regular.ttf
@@ -1928,7 +1928,6 @@ pip_boy_os/images/svgs/weather_icons/thunderstorm.png
 pip_boy_os/images/svgs/weather_icons/windy.png
 pip_boy_os/images/worldmap/CompanionWorldMap.png
 pip_boy_os/images/worldmap/WorldMapMarkers.png
-pip_boy_os/modules/__init__.py
 pip_boy_os/modules/boot.py
 pip_boy_os/modules/data_models.py
 pip_boy_os/modules/hardware_input.py
@@ -1947,7 +1946,6 @@ pip_boy_os/modules/ui.py
 pip_boy_os/modules/user_config.py
 pip_boy_os/modules/util_functs.py
 pip_boy_os/modules/cpp/CMakeLists.txt
-pip_boy_os/modules/cpp/__init__.py
 pip_boy_os/modules/cpp/math.cpp
 pip_boy_os/modules/cpp/math.hpp
 pip_boy_os/modules/cpp/obj_loader.cpp
@@ -1957,17 +1955,13 @@ pip_boy_os/modules/cpp/wireframe.cpp
 pip_boy_os/modules/cpp/wireframe.cpython-313-x86_64-linux-gnu.so
 pip_boy_os/modules/cpp/wireframe.exp
 pip_boy_os/modules/cpp/wireframe.lib
-pip_boy_os/modules/tabs/__init__.py
-pip_boy_os/modules/tabs/clock_tab/__init__.py
 pip_boy_os/modules/tabs/clock_tab/clock_tab.py
-pip_boy_os/modules/tabs/data_tab/__init__.py
 pip_boy_os/modules/tabs/data_tab/data_tab.py
 pip_boy_os/modules/tabs/data_tab/notes_tab.py
 pip_boy_os/modules/tabs/data_tab/quest_tab.py
 pip_boy_os/modules/tabs/data_tab/settings_tab.py
 pip_boy_os/modules/tabs/data_tab/stats_tab.py
 pip_boy_os/modules/tabs/data_tab/workshops_tab.py
-pip_boy_os/modules/tabs/inv_tab/__init__.py
 pip_boy_os/modules/tabs/inv_tab/aid_tab.py
 pip_boy_os/modules/tabs/inv_tab/ammo_tab.py
 pip_boy_os/modules/tabs/inv_tab/apparel_tab.py
@@ -1976,7 +1970,6 @@ pip_boy_os/modules/tabs/inv_tab/inv_tab.py
 pip_boy_os/modules/tabs/inv_tab/junk_tab.py
 pip_boy_os/modules/tabs/inv_tab/misc_tab.py
 pip_boy_os/modules/tabs/inv_tab/weapons_tab.py
-pip_boy_os/modules/tabs/map_tab/__init__.py
 pip_boy_os/modules/tabs/map_tab/map_tab.py
 pip_boy_os/modules/tabs/map_tab/world_tab.py
 pip_boy_os/modules/tabs/radio_tab/__init__.py
