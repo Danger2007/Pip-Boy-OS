@@ -1,2 +1,3 @@
 [console_scripts]
 pipboy-os = pip_boy_os.modules.main:main
+pipboy-os-setup = pip_boy_os.modules.setup_assets:main
