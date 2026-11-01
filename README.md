@@ -4,8 +4,8 @@ The Pip-Boy OS (or Pip-Boy Operating System) is the 'soul' of the SPC 3000.
 This is my first ever Python code, so I used a [half made base](https://github.com/kelmes1/pipboy-pi) that I found online;
 
 
-![Prenentation NV Gif](https://raw.githubusercontent.com/Danger2007/Survival-PC-3000/main/Software/documentation/screenshots/Record.gif)
-![Prenentation NV Gif](https://raw.githubusercontent.com/Danger2007/Survival-PC-3000/main/Software/documentation/screenshots/RecordFO4.gif)
+![Pip-Boy OS New Vegas Demo](https://raw.githubusercontent.com/Danger2007/Pip-Boy-OS/main/documentation/screenshots/Record.gif)
+![Pip-Boy OS Demo](https://raw.githubusercontent.com/Danger2007/Pip-Boy-OS/main/documentation/screenshots/RecordFO4.gif)
 
 ## AI Disclaimer
 I used Gemini to transcribe human logic to Python code, this is to maximise library use, code optimization and time efficiency (while still learning how those comands work). I also did some direct modifications to the code (to fix some errors)
@@ -16,7 +16,7 @@ All the software requirements are listed in the [requirements file](https://gith
 
 You can Install Pip-Boy OS from [PyPI](https://pypi.org/project/pipboy-os/#description) or you can directly download the source code in the repo. 
 
-To quickly install and run the code put these 2 lines of code in the terminal:
+To quickly install and run the code put these 3 lines of code in the terminal **(the loading takes a few minutes)**:
 
         pip install pipboy-os
         pipboy-os-setup
@@ -27,8 +27,8 @@ To quickly install and run the code put these 2 lines of code in the terminal:
         pip install pipboy-os
         python -m pip_boy_os.modules.setup_assets
         python -m pip_boy_os.modules.main
-        
-![Prenentation Gif](https://raw.githubusercontent.com/Danger2007/Survival-PC-3000/main/Software/documentation/screenshots/Proof-shit-works.gif )
+**There is a cut at the second comand so as to make this a gif**
+![Pip-Boy OS Quick Run Demo](https://raw.githubusercontent.com/Danger2007/Pip-Boy-OS/main/documentation/screenshots/Proof-shit-woks.gif)
 
 ## Preparations for Running the Sourcecode
 If you install the source code before running the Pip-Boy OS for the first time locally you'll need to run the file **init** (init.bash if you are using windows; init.sh if you're using linux) these files create various vital files and folders in the Pip-Boy OS (it generates the '**cache**' folder and the '**settings_secret**' file). **In case init doesn't compile/run**: you have to manually add the cache folder with inside 2 folders named '**map**' and '**places**' and you have to add a Python file inside **modules** called '**settings_secret**' with these lines of code.
@@ -42,7 +42,7 @@ REMEMBER: if you want to see the IRL Map you need to insert in the code above yo
 ## How To Run Sourcecode
 To start the sourcecodecode you need to run [main.py](https://github.com/Danger2007/Survival-PC-3000/blob/main/Software/pip_boy_os/modules/main.py), running other codes inside the software will not work. The code works perfectly on PC, give it a try!
 
-![alt text](https://raw.githubusercontent.com/Danger2007/Survival-PC-3000/main/Software/documentation/screenshots/image-1.png)
+![alt text](https://raw.githubusercontent.com/Danger2007/Pip-Boy-OS/main/documentation/screenshots/image-1.png)
 
 ## Customization
 The Pip-Boy OS that you can find in the repo can also be personalized using the [configure.py](https://github.com/Danger2007/Survival-PC-3000/blob/main/Software/configure.py) file or by using the **settings tab in the running code** (the position of the tab changes: in FO4 UI it's located in the DATA Menu, in the FNV UI it's a subtab of the General Tab in STATS). To move in the configure.py UI you use as inputs:
@@ -51,7 +51,7 @@ The Pip-Boy OS that you can find in the repo can also be personalized using the 
 - **ENTER**: To change/select an option
 
 (Always make sure that the Numlock is **ON**)
-![alt text](https://raw.githubusercontent.com/Danger2007/Survival-PC-3000/main/Software/documentation/screenshots/image.png)
+![alt text](https://raw.githubusercontent.com/Danger2007/Pip-Boy-OS/main/documentation/screenshots/image.png )
 
 ### PARTS NOT MINE:
 
