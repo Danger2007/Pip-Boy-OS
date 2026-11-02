@@ -12,11 +12,10 @@ I used Gemini to transcribe human logic to Python code, this is to maximise libr
 
 ## 🚀 Quick Start / Requirements / Installation
 
-All the software requirements are listed in the [requirements file](https://github.com/Danger2007/Survival-PC-3000/blob/main/Software/requirements.txt)
-
+All the software requirements are listed in the [requirements file](https://github.com/Danger2007/Pip-Boy-OS/blob/main/requirements.txt)
 You can Install Pip-Boy OS from [PyPI](https://pypi.org/project/pipboy-os/#description) or you can directly download the source code in the repo. 
 
-To quickly install and run the code put these 3 lines of code in the terminal **(the loading takes a few minutes)**:
+To quickly install and run the code put these 3 lines of code in the terminal **(Make sure Python 3.12 or later is installed before launching these comands)** **(the loading takes a few minutes)**:
 
         pip install pipboy-os
         pipboy-os-setup
@@ -40,12 +39,12 @@ If you install the source code before running the Pip-Boy OS for the first time 
  
 REMEMBER: if you want to see the IRL Map you need to insert in the code above your information (doesn't need to be true) and Create/Insert your Geoapify API Key (at https://www.geoapify.com/get-started-with-maps-api/ in the "Project and API Keys" section); DO NOT insert the URL (it doesn't work).
 ## How To Run Sourcecode
-To start the sourcecodecode you need to run [main.py](https://github.com/Danger2007/Survival-PC-3000/blob/main/Software/pip_boy_os/modules/main.py), running other codes inside the software will not work. The code works perfectly on PC, give it a try!
+To start the sourcecodecode you need to run [main.py](https://github.com/Danger2007/Pip-Boy-OS/blob/main/pip_boy_os/modules/main.py), running other codes inside the software will not work. The code works perfectly on PC, give it a try!
 
 ![alt text](https://raw.githubusercontent.com/Danger2007/Pip-Boy-OS/main/documentation/screenshots/image-1.png)
 
 ## Customization
-The Pip-Boy OS that you can find in the repo can also be personalized using the [configure.py](https://github.com/Danger2007/Survival-PC-3000/blob/main/Software/configure.py) file or by using the **settings tab in the running code** (the position of the tab changes: in FO4 UI it's located in the DATA Menu, in the FNV UI it's a subtab of the General Tab in STATS). To move in the configure.py UI you use as inputs:
+The Pip-Boy OS that you can find in the repo can also be personalized using the [configure.py](https://github.com/Danger2007/Pip-Boy-OS/blob/main/configure.py) file or by using the **settings tab in the running code** (the position of the tab changes: in FO4 UI it's located in the DATA Menu, in the FNV UI it's a subtab of the General Tab in STATS). To move in the configure.py UI you use as inputs:
 - **Numpad 2**: to move down
 - **Numpad 8**: to move up
 - **ENTER**: To change/select an option
@@ -68,7 +67,7 @@ The Pip-Boy OS that you can find in the repo can also be personalized using the 
 -**Images/Icons/2d Animations:** most images/icons/animations of the Fallout 4 UI are inherited from Kelmes1's repo (there are a few exceptions, like the [fatman animation](https://sketchfab.com/3d-models/fatman-m45-65bf0e5a4c304ca091d8dfa6a3a4fa8d) that I downloaded from sketchfab or the food icon that I downloaded from iconify). Almost all images from the Fallout New Vegas UI are from [The Fallout Fandom Wiki](https://fallout.fandom.com/wiki/Fallout_Wiki) (the only exception are the pipboy parts from the CND tab, which I acquired by cropping various online images of the original tab)
 
 ## Legal Notice:
-This Pip-Boy OS is a non-commercial, fan-made software interface inspired by the Fallout universe (Bethesda Softworks). The core software base is inherited from Kelmes1's open-source repository under the MIT License. All official visual assets, iconography, and game elements remain the property of their respective copyright holders (Bethesda Softworks / Microsoft). This repository is published strictly for educational, portfolio, and personal maker purposes with no intent for commercial gain or copyright infringement. If you need more info I left a [LICENSE file](https://github.com/Danger2007/Survival-PC-3000/blob/main/LICENSE).
+This Pip-Boy OS is a non-commercial, fan-made software interface inspired by the Fallout universe (Bethesda Softworks). The core software base is inherited from Kelmes1's open-source repository under the MIT License. All official visual assets, iconography, and game elements remain the property of their respective copyright holders (Bethesda Softworks / Microsoft). This repository is published strictly for educational, portfolio, and personal maker purposes with no intent for commercial gain or copyright infringement. If you need more info I left a [LICENSE file](https://github.com/Danger2007/Pip-Boy-OS/blob/main/LICENSE).
 
 ## Inputs
 The Pip-Boy OS uses for input:
@@ -88,4 +87,4 @@ The Pip-Boy OS uses for input:
 ## Important information
 - **This version might not work on the SPC 3000**: As I don't currently have the hardware, I cannot check;
 - **Not everything from the games is in the code**: I don't have enough time to insert all missions/notes/weaons etc... so for the Stardance event I'll just leave some elements from the games and some fallback Images to ease future additions;
-- **There is NO FIRMWARE**: the project uses a raspberry and, because I'm not using custom PCBs, it doesn't need a firmware. The only thing near to a firmware is the [hardware_inputs](https://github.com/Danger2007/Survival-PC-3000/blob/main/Software/pip_boy_os/modules/hardware_input.py ) file in Pip-Boy OS, which links the inputs from the GPIO ports of the Raspberry to their repsective PC Button/s (example: knob == A/D key);
+- **There is NO FIRMWARE**: the project uses a raspberry and, because I'm not using custom PCBs, it doesn't need a firmware. The only thing near to a firmware is the [hardware_inputs](https://github.com/Danger2007/Pip-Boy-OS/blob/main/pip_boy_os/modules/hardware_input.py ) file in Pip-Boy OS, which links the inputs from the GPIO ports of the Raspberry to their repsective PC Button/s (example: knob == A/D key);
