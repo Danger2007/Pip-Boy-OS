@@ -39,7 +39,7 @@ If you install the source code before running the Pip-Boy OS for the first time 
  
 REMEMBER: if you want to see the IRL Map you need to insert in the code above your information (doesn't need to be true) and Create/Insert your Geoapify API Key (at https://www.geoapify.com/get-started-with-maps-api/ in the "Project and API Keys" section); DO NOT insert the URL (it doesn't work).
 ## How To Run Sourcecode
-To start the sourcecodecode you need to run [main.py](https://github.com/Danger2007/Pip-Boy-OS/blob/main/pip_boy_os/modules/main.py), running other codes inside the software will not work. The code works perfectly on PC, give it a try!
+To start the sourcecodecode you need to run [main.py](https://github.com/Danger2007/Pip-Boy-OS/blob/main/pip_boy_os/modules/main.py), running other codes inside the software will not work. The code works perfectly on PC, give it a try! **(just make sure you have all the requirements installed before running!!!)**
 
 ![alt text](https://raw.githubusercontent.com/Danger2007/Pip-Boy-OS/main/documentation/screenshots/image-1.png)
 
