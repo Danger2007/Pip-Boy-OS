@@ -3,86 +3,59 @@ import settings
 from .inv_base import InvBase
 from ui import ItemGrid
 from util_functs import Utils
-
-
 class AidTab(InvBase):
     def __init__(self, screen, tab_instance, draw_space):
         super().__init__(screen, tab_instance, draw_space, category='Aid', enable_turntable=True)
         self.item_grid = None
-
         if self.no_items:
             return
-
         self.time_icon = Utils.load_svg(self.small_icon_size, settings.TIME_ICON) if hasattr(settings, 'TIME_ICON') else None
-              
-        self.item_grid = ItemGrid(
-            draw_space=self.calculate_grid_space(),
-            font=self.inv_font,
-            padding=1
-        )
-        
+        self.item_grid = ItemGrid(draw_space=self.calculate_grid_space(), font=self.inv_font, padding=1)
         if self.unique_items and 0 <= self.inv_list.selected_index < len(self.unique_items):
-            entries = self.get_grid_entries(self.unique_items[self.inv_list.selected_index])
-            self.item_grid.update(entries)
+            ntrs = self.get_grid_entries(self.unique_items[self.inv_list.selected_index])
+            self.item_grid.update(ntrs)
 
-    def get_stats_display_data(self, item):
+    def get_stats_display_data(self, item): # better ifs than cases
         if not item:
             return []
-        
-        display_data = []
-        
+        dspl_dt = []
         if getattr(item, 'health', None):
-            display_data.append({"label": "Health", "value": item.health})
-            
+            dspl_dt.append({'label': 'Health', 'value': item.health})
         if getattr(item, 'ap', None):
-            display_data.append({"label": "AP", "value": item.ap})
-            
+            dspl_dt.append({'label': 'AP', 'value': item.ap})
         if getattr(item, 'rads', None):
-            display_data.append({"label": "Rads", "value": item.rads})
-            
+            dspl_dt.append({'label': 'Rads', 'value': item.rads})
         if getattr(item, 'special_bonuses', None):
-            for stat, bonus in item.special_bonuses.items():
-                display_data.append({"label": stat, "value": bonus})
-            
-        return display_data
-
+            for stt, bns in item.special_bonuses.items():
+                dspl_dt.append({'label': stt, 'value': bns})
+        return dspl_dt
     def get_grid_entries(self, item):
-        entries = []
-        
-        stats_data = self.get_stats_display_data(item)
-        for stat in stats_data:
-            entry = {"label": stat["label"], "value": stat["value"]}
+        ntrs = []
+        stts_dt = self.get_stats_display_data(item)
+        for stt in stts_dt:
+            ntr = {'label': stt['label'], 'value': stt['value']}
             if hasattr(self, 'time_icon') and self.time_icon:
-                entry["icon"] = self.time_icon
-            entries.append(entry)
-            
-        standard = [
-            ("Weight", getattr(item, 'weight', 0)),
-            ("Value", getattr(item, 'value', 0))
-        ]
-        for label, value in standard:
-            entries.append({"label": label, "value": value})
-            
-        return entries
+                ntr['icon'] = self.time_icon
+            ntrs.append(ntr)
+        stndrd = [('Weight', getattr(item, 'weight', 0)), ('Value', getattr(item, 'value', 0))]
+        for lbl, val in stndrd:
+            ntrs.append({'label': lbl, 'value': val})
+        return ntrs
 
-    def scroll(self, direction: bool):
+    def scroll(self, direction):
         if self.no_items or self.item_grid is None:
             return
-
-        prev_index = self.inv_list.selected_index
+        prv_ndx = self.inv_list.selected_index
         super().scroll(direction)
-        
-        if prev_index != self.inv_list.selected_index and self.unique_items and 0 <= self.inv_list.selected_index < len(self.unique_items):
-            entries = self.get_grid_entries(self.unique_items[self.inv_list.selected_index])
-            self.item_grid.update(entries)
-
+        if prv_ndx != self.inv_list.selected_index and self.unique_items and (0 <= self.inv_list.selected_index < len(self.unique_items)):
+            ntrs = self.get_grid_entries(self.unique_items[self.inv_list.selected_index])
+            self.item_grid.update(ntrs)
     def select_item(self):
         if self.no_items:
             return
         super().select_item()
         if not self.is_nv:
             self.tab_instance.init_footer(self, (settings.SCREEN_WIDTH // 4, settings.SCREEN_WIDTH // 4), self.init_footer_text())
-
     def render(self):
         super().render()
         if self.no_items or self.item_grid is None or self.is_nv:

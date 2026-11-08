@@ -8,7 +8,7 @@ This is my first ever Python code, so I used a [half made base](https://github.c
 ![Pip-Boy OS Demo](https://raw.githubusercontent.com/Danger2007/Pip-Boy-OS/main/documentation/screenshots/RecordFO4.gif)
 
 ## AI Disclaimer
-I used Gemini to transcribe human logic to Python code, this is to maximise library use, code optimization and time efficiency (while still learning how those comands work). I also did some direct modifications to the code (to fix some errors)
+I used Gemini during development mostly to help structure the code, translate my logic into Python, and figure out bugs that I couldn't solve. Everything else: the UI design, the asset pipeline, Blender models, and manual debugging was entirely done by me.
 
 ## 🚀 Quick Start / Requirements / Installation
 
@@ -19,7 +19,7 @@ To quickly install and run the code put these 3 lines of code in the terminal **
 
         pip install pipboy-os
         pipboy-os-setup
-        pip_boy_os
+        pipboy-os
         
 **if this doesn't work try this**:
 

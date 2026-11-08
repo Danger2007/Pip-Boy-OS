@@ -6,286 +6,191 @@ import xml.etree.ElementTree as ET
 import re
 
 class Utils:
-         
+
     @staticmethod
     def tint_image(image, color=settings.PIP_BOY_LIGHT):
-        """Tint image with specified color while preserving alpha"""
-        tinted = image.copy()
-        # Multiply RGB channels with color, preserve original alpha
-        tinted.fill(color[:3] + (0,), special_flags=pygame.BLEND_RGB_MULT)
-        return tinted       
-    
+        tntd = image.copy()
+        tntd.fill(color[:3] + (0,), special_flags=pygame.BLEND_RGB_MULT) #mmh... Cat :3
+        return tntd
     @staticmethod
-    def scale_image(image, scale: float):
+    def scale_image(image, scale):
         return pygame.transform.smoothscale_by(image, scale)
-        
+
     @staticmethod
-    def scale_image_abs(image, width: float = None, height: float = None):
-        """
-        Scale image absolutely but keep aspect ratio.
-        """
+    def scale_image_abs(image, width=None, height=None):
         if width is None and height is None:
             return image
-        
         if width is None:
             width = image.get_width() * (height / image.get_height())
         elif height is None:
             height = image.get_height() * (width / image.get_width())
-        
-        # Ensure width and height are integers
-        return pygame.transform.smoothscale(
-            image, 
-            (int(width), int(height))
-        )
-    
+        return pygame.transform.smoothscale(image, (int(width), int(height)))
     @staticmethod
-    def load_images(folder: str, tint=settings.PIP_BOY_LIGHT):
-        """
-        Load and tint all PNG images in the specified folder.
-        """
+    def load_images(folder, tint=settings.PIP_BOY_LIGHT):
         try:
-            images = [
-                Utils.tint_image(
-                    pygame.image.load(os.path.join(folder, f)).convert_alpha(),
-                    tint
-                ) for f in sorted(os.listdir(folder)) if f.endswith(".png")
-            ]
-            return images
-        except FileNotFoundError:
+            mgs = [Utils.tint_image(pygame.image.load(os.path.join(folder, f)).convert_alpha(), tint) for f in sorted(os.listdir(folder)) if f.endswith('.png')]
+            return mgs
+        except:
             return []
 
-    @staticmethod        
-    def load_svgs_dict(folder: str, scale: int, tint=settings.PIP_BOY_LIGHT):
-        """
-        Load and tint all SVG images in the specified folder.
-        """
+    @staticmethod
+    def load_svgs_dict(folder, scale, tint=settings.PIP_BOY_LIGHT): # this works only for pngs, a ton of svgs for nothing :(
         try:
-            images = {
-                f: Utils.tint_image(
-                    pygame.image.load_sized_svg(os.path.join(folder, f), (scale, scale)).convert_alpha(),
-                    tint
-                ) for f in sorted(os.listdir(folder)) if f.endswith(".svg")
-            }
-            images= {k.replace(".svg", ""): v for k, v in images.items()}
-            return images
-        except FileNotFoundError:
+            mgs = {f: Utils.tint_image(pygame.image.load_sized_svg(os.path.join(folder, f), (scale, scale)).convert_alpha(), tint) for f in sorted(os.listdir(folder)) if f.endswith('.svg')}
+            mgs = {k.replace('.svg', ''): v for k, v in mgs.items()}
+            return mgs
+        except:
             return {}
-        
+
     @staticmethod
     def get_date():
         now = datetime.datetime.now()
-        
-        # user_config.py reading (if it fails it uses the default values in settings.py)
         try:
             import user_config
-        except ImportError:
+        except:
             user_config = None
-
-        # 1. Reads DATE_MODE
-        date_mode = getattr(user_config, 'DATE_MODE', None) if user_config else None
-        if date_mode is None:
-            date_mode = getattr(settings, 'DATE_MODE', 'Game')
-
-        # 2. Reads UI_STYLE
-        ui_style = getattr(user_config, 'UI_STYLE', None) if user_config else None
-        if ui_style is None:
-            ui_style = getattr(settings, 'UI_STYLE', '')
-        ui_style = str(ui_style).lower()
-
-        current_date = f"{now.day}.{now.month}"
-
-        # 3. Get year using DATE_MODE and UI_STYLE ( Game = Year from the game and UI_STYLE indicates the game, Real = Current year)
-        if str(date_mode).lower() == 'real':
-            current_year = now.strftime("%Y")
+        dt_md = getattr(user_config, 'DATE_MODE', None) if user_config else None
+        if dt_md is None:
+            dt_md = getattr(settings, 'DATE_MODE', 'Game')
+        ui_stl = getattr(user_config, 'UI_STYLE', None) if user_config else None
+        if ui_stl is None:
+            ui_stl = getattr(settings, 'UI_STYLE', '')
+        ui_stl = str(ui_stl).lower()
+        crrnt_dt = f'{now.day}.{now.month}'
+        if str(dt_md).lower() == 'real':
+            crrnt_year = now.strftime('%Y')
+        elif 'nv' in ui_stl or 'vegas' in ui_stl:
+            crrnt_year = '2281'
         else:
-            # 'Game' Mode
-            if 'nv' in ui_style or 'vegas' in ui_style:
-                current_year = "2281"
-            else:
-                current_year = "2287"
+            crrnt_year = '2287'
+        return f'{crrnt_dt}.{crrnt_year}'
 
-        return f"{current_date}.{current_year}"
-    
     @staticmethod
-    def load_svgs(folder: str, scale: float, tint=settings.PIP_BOY_LIGHT, load_transforms=False):
-        """
-        Load, scale, and tint all SVG images in the specified folder.
-        - Maintains aspect ratio using the first SVG's width as the reference.
-        - Normalizes transforms (tx, ty) to be relative to the first SVG's position.
-        - Scales transforms uniformly to match the target size.
-        """
+    def load_svgs(folder, scale, tint=settings.PIP_BOY_LIGHT, load_transforms=False): 
         try:
-            svg_files = [f for f in sorted(os.listdir(folder)) if f.endswith(".svg")]
+            svg_files = [f for f in sorted(os.listdir(folder)) if f.endswith('.svg')]
             if not svg_files:
                 return []
-            
-            # Parse first SVG to get reference dimensions
             first_svg_path = os.path.join(folder, svg_files[0])
-            first_width, first_height = Utils._get_svg_dimensions(first_svg_path)
+            frst_wdth, frst_hght = Utils._get_svg_dimensions(first_svg_path)
             if load_transforms:
-                first_tx, first_ty = Utils._get_svg_transform(first_svg_path)
-            
-            if first_width <= 0 or first_height <= 0:
-                # Fallback to avoid division by zero
-                scale_factor = 1.0
+                frst_tx, frst_ty = Utils._get_svg_transform(first_svg_path)
+            if frst_wdth <= 0 or frst_hght <= 0:
+                scl_fctr = 1.0
             else:
-                # Uniform scaling based on first SVG's width to preserve aspect ratio
-                scale_factor = scale / first_width
-            
-            images = []
-            transforms = []
+                scl_fctr = scale / frst_wdth
+            mgs = []
+            trnsfrms = []
             for f in svg_files:
                 svg_path = os.path.join(folder, f)
                 width, height = Utils._get_svg_dimensions(svg_path)
-                
-                # Calculate target size while preserving aspect ratio
-                target_width = int(width * scale_factor)
-                target_height = int(height * scale_factor)
-                target_size = (target_width, target_height)
-                
+                trgt_wdth = int(width * scl_fctr)
+                trgt_hght = int(height * scl_fctr)
+                trgt_sz = (trgt_wdth, trgt_hght)
                 if load_transforms:
                     tx, ty = Utils._get_svg_transform(svg_path)
-                    # Calculate deltas relative to first SVG's transform
-                    delta_tx = tx - first_tx
-                    delta_ty = ty - first_ty
-                    # Scale transforms using the uniform factor
-                    scaled_tx = delta_tx * scale_factor
-                    scaled_ty = delta_ty * scale_factor
-                    transforms.append((scaled_tx, scaled_ty))
-                
-                # Load and scale the SVG
-                img = pygame.image.load_sized_svg(svg_path, target_size).convert_alpha()
-                tinted_img = Utils.tint_image(img, tint)
-                images.append(tinted_img)
-            
-            return (images, transforms) if load_transforms else images
-        except FileNotFoundError:
-            return []
-    
-    
-    @staticmethod
-    def _get_svg_dimensions(svg_path):
-        """Parse width/height from viewBox (preferred) or width/height attributes."""
-        try:
-            tree = ET.parse(svg_path)
-            root = tree.getroot()
-            viewbox = root.get('viewBox')
-            if viewbox:
-                parts = viewbox.strip().split()
-                if len(parts) >= 4:
-                    vb_width = parts[2]
-                    vb_height = parts[3]
-                    # Clean non-numeric characters
-                    vb_width = re.sub(r'[^\d.]', '', vb_width) if vb_width else '0'
-                    vb_height = re.sub(r'[^\d.]', '', vb_height) if vb_height else '0'
-                    return float(vb_width), float(vb_height)
-            # Fallback to width/height attributes
-            width = root.get('width', '0')
-            height = root.get('height', '0')
-            width = re.sub(r'[^\d.]', '', width)
-            height = re.sub(r'[^\d.]', '', height)
-            return float(width or 0), float(height or 0)
+                    dlt_tx = tx - frst_tx
+                    dlt_ty = ty - frst_ty
+                    scld_tx = dlt_tx * scl_fctr
+                    scld_ty = dlt_ty * scl_fctr
+                    trnsfrms.append((scld_tx, scld_ty))
+                img = pygame.image.load_sized_svg(svg_path, trgt_sz).convert_alpha()
+                tntd_mg = Utils.tint_image(img, tint)
+                mgs.append(tntd_mg)
+            return (mgs, trnsfrms) if load_transforms else mgs
         except:
-            return 0.0, 0.0
-    
+            return []
+    @staticmethod
+    def _get_svg_dimensions(svg_path): 
+        try:
+            tr = ET.parse(svg_path)
+            rt = tr.getroot()
+            vwbx = rt.get('viewBox')
+            if vwbx:
+                prts = vwbx.strip().split()
+                if len(prts) >= 4:
+                    vb_wdth = prts[2]
+                    vb_hght = prts[3]
+                    vb_wdth = re.sub('[^\\d.]', '', vb_wdth) if vb_wdth else '0'
+                    vb_hght = re.sub('[^\\d.]', '', vb_hght) if vb_hght else '0'
+                    return (float(vb_wdth), float(vb_hght))
+            width = rt.get('width', '0')
+            height = rt.get('height', '0')
+            width = re.sub('[^\\d.]', '', width)
+            height = re.sub('[^\\d.]', '', height)
+            return (float(width or 0), float(height or 0))
+        except:
+            return (0.0, 0.0)
+
     @staticmethod
     def _get_svg_transform(svg_path):
-        """Parse the transform tx and ty from an SVG file."""
         try:
-            tree = ET.parse(svg_path)
-            root = tree.getroot()
-            tx, ty = 0.0, 0.0
-            # Check root element's transform first
-            transform_str = root.get('transform', '')
+            tr = ET.parse(svg_path)
+            rt = tr.getroot()
+            tx, ty = (0.0, 0.0)
+            transform_str = rt.get('transform', '')
             if transform_str:
                 tx, ty = Utils._parse_transform(transform_str)
-            # Search children if root has no transform
             if tx == 0 and ty == 0:
-                for elem in root.iter():
-                    if elem == root:
-                        continue  # Skip root
-                    transform_str = elem.get('transform', '')
+                for lm in rt.iter():
+                    if lm == rt:
+                        continue
+                    transform_str = lm.get('transform', '')
                     if transform_str:
-                        elem_tx, elem_ty = Utils._parse_transform(transform_str)
-                        if elem_tx != 0 or elem_ty != 0:
-                            tx, ty = elem_tx, elem_ty
+                        lm_tx, lm_ty = Utils._parse_transform(transform_str)
+                        if lm_tx != 0 or lm_ty != 0:
+                            tx, ty = (lm_tx, lm_ty)
                             break
-            return tx, ty
+            return (tx, ty)
         except:
-            return 0.0, 0.0
-    
+            return (0.0, 0.0)
+
     @staticmethod
     def _parse_transform(transform_str):
-        """Extract tx and ty from a transform string."""
         if not transform_str:
             return (0.0, 0.0)
-        # Check for translate
-        translate_match = re.match(r'translate\(\s*([-\d.]+)(?:\s*,\s*|\s+)([-\d.]+)\s*\)', transform_str)
-        if translate_match:
-            tx = float(translate_match.group(1))
-            ty = float(translate_match.group(2))
+        trnslt_mtch = re.match('translate\\(\\s*([-\\d.]+)(?:\\s*,\\s*|\\s+)([-\\d.]+)\\s*\\)', transform_str)
+        if trnslt_mtch:
+            tx = float(trnslt_mtch.group(1))
+            ty = float(trnslt_mtch.group(2))
             return (tx, ty)
-        # Check for matrix
-        matrix_match = re.match(r'matrix\(\s*([-\d.]+)[,\s]+([-\d.]+)[,\s]+([-\d.]+)[,\s]+([-\d.]+)[,\s]+([-\d.]+)[,\s]+([-\d.]+)\s*\)', transform_str)
-        if matrix_match:
-            tx = float(matrix_match.group(5))
-            ty = float(matrix_match.group(6))
+        mtrx_mtch = re.match('matrix\\(\\s*([-\\d.]+)[,\\s]+([-\\d.]+)[,\\s]+([-\\d.]+)[,\\s]+([-\\d.]+)[,\\s]+([-\\d.]+)[,\\s]+([-\\d.]+)\\s*\\)', transform_str)
+        if mtrx_mtch:
+            tx = float(mtrx_mtch.group(5))
+            ty = float(mtrx_mtch.group(6))
             return (tx, ty)
         return (0.0, 0.0)
-        
-    
+
     @staticmethod
-    def load_svg(scale: int, path: str, tint=settings.PIP_BOY_LIGHT):
-        """
-        Load an SVG file, scale it, and apply a tint.
-        """
-        if path.endswith(".svg"):
+    def load_svg(scale, path, tint=settings.PIP_BOY_LIGHT):
+        if path.endswith('.svg'):
             width, height = Utils._get_svg_dimensions(path)
-            scale_factor = scale / width
+            scl_fctr = scale / width
+            trgt_wdth = int(width * scl_fctr)
+            trgt_hght = int(height * scl_fctr)
+            trgt_sz = (trgt_wdth, trgt_hght)
+            return Utils.tint_image(pygame.image.load_sized_svg(path, trgt_sz).convert_alpha(), tint)
 
-            # Calculate target size while preserving aspect ratio
-            target_width = int(width * scale_factor)
-            target_height = int(height * scale_factor)
-            target_size = (target_width, target_height)
-            # Assuming pygame.image.load_sized_svg exists
-            return Utils.tint_image(
-                pygame.image.load_sized_svg(path, target_size).convert_alpha(),
-                tint
-            )
-
-
-
-    
     @staticmethod
     def play_sfx(sound_file, volume=settings.VOLUME, start=0, channel=None):
-        """
-        Play a sound file.
-        """
         if settings.SOUND_ON:
-            sound = pygame.mixer.Sound(sound_file)
-            sound.set_volume(volume)
+            snd = pygame.mixer.Sound(sound_file)
+            snd.set_volume(volume)
             if channel is None:
-                sound.play(start)
+                snd.play(start)
             else:
-                # Get the channel object once and reuse it
                 ch = pygame.mixer.Channel(channel)
-                ch.stop()  # Stops any sound currently on this channel
-                ch.play(sound)
-                
+                ch.stop()
+                ch.play(snd)
     @staticmethod
     def lerp(start, end, start_range, end_range, value):
-        """
-        Linear interpolation between two values.
-        """
         return start + (end - start) * ((value - start_range) / (end_range - start_range))
 
     @staticmethod
-    def get_time():
-        now = datetime.datetime.now()    
-        current_time = now.strftime("%I:%M%p")
-        return current_time
-    
+    def get_time(): # have to rework with raspi port
+        now = datetime.datetime.now()
+        crrnt_tm = now.strftime('%I:%M%p')
+        return crrnt_tm
     @staticmethod
-    def file_exists(path: str) -> bool:
-        """Check if a file exists at the given path."""
+    def file_exists(path): # the backbone of fallbacks
         return os.path.isfile(path)

@@ -2,147 +2,62 @@ import pygame
 import settings
 from ui import ItemGrid
 
-
 class StatTab:
-    def __init__(self, screen, tab_instance, draw_space: pygame.Rect):
+
+    def __init__(self, screen, tab_instance, draw_space):
         self.screen = screen
         self.tab_instance = tab_instance
         self.draw_space = draw_space
-        # Fonts :)
         self.font = pygame.font.Font(settings.ROBOTO_BOLD_PATH, 10)
         self.font_small = pygame.font.Font(settings.ROBOTO_BOLD_PATH, 9)
-
-        self.categories = [
-            {
-                "name": "General",
-                "stats": [
-                    ("Locations Discovered", 322),
-                    ("Locations Cleared", 191),
-                    ("Days Passed", 383),
-                    ("Hours Slept", 798),
-                    ("Hours Waiting", 1313),
-                    ("Caps Found", 309358),
-                    ("Most Caps Carried", 224581),
-                    ("Junk Collected", 15572),
-                    ("Chests Looted", 1361),
-                    ("Magazines Found", 69),
-                ]
-            },
-            {
-                "name": "Quest",
-                "stats": [
-                    ("Quests Completed", 45),
-                    ("Misc Objectives Completed", 128),
-                    ("Main Quests Completed", 12),
-                    ("Side Quests Completed", 33),
-                ]
-            },
-            {
-                "name": "Combat",
-                "stats": [
-                    ("People Killed", 542),
-                    ("Creatures Killed", 890),
-                    ("Robots Destroyed", 120),
-                    ("Synths Destroyed", 215),
-                    ("Critical Hits", 310),
-                    ("Sneak Attacks", 142),
-                ]
-            },
-            {
-                "name": "Crafting",
-                "stats": [
-                    ("Weapons Improved", 84),
-                    ("Armor Improved", 112),
-                    ("Chems Crafted", 65),
-                    ("Food Cooked", 140),
-                    ("Objects Built", 512),
-                ]
-            },
-            {
-                "name": "Crime",
-                "stats": [
-                    ("Locks Picked", 156),
-                    ("Pockets Picked", 24),
-                    ("Items Stolen", 310),
-                    ("Trespasses", 15),
-                ]
-            }
-        ]
-
+        self.categories = [{'name': 'General', 'stats': [('Locations Discovered', 322), ('Locations Cleared', 191), ('Days Passed', 383), ('Hours Slept', 798), ('Hours Waiting', 1313), ('Caps Found', 309358), ('Most Caps Carried', 224581), ('Junk Collected', 15572), ('Chests Looted', 1361), ('Magazines Found', 69)]}, {'name': 'Quest', 'stats': [('Quests Completed', 45), ('Misc Objectives Completed', 128), ('Main Quests Completed', 12), ('Side Quests Completed', 33)]}, {'name': 'Combat', 'stats': [('People Killed', 542), ('Creatures Killed', 890), ('Robots Destroyed', 120), ('Synths Destroyed', 215), ('Critical Hits', 310), ('Sneak Attacks', 142)]}, {'name': 'Crafting', 'stats': [('Weapons Improved', 84), ('Armor Improved', 112), ('Chems Crafted', 65), ('Food Cooked', 140), ('Objects Built', 512)]}, {'name': 'Crime', 'stats': [('Locks Picked', 156), ('Pockets Picked', 24), ('Items Stolen', 310), ('Trespasses', 15)]}]
         self.selected_category = 0
-
-        # --- CALCULATION OF DIVISION AND HORIZONTAL PADDING ---
-        left_w = int((self.draw_space.width + 15) / 2) #space between left and right panels
-        
-        padding_x = 5
-        grid_left = self.draw_space.left + left_w + padding_x
-        grid_top = self.draw_space.top + 8
-        grid_width = (self.draw_space.right - padding_x) - grid_left
-        grid_height = self.draw_space.height - 16
-        
-        grid_rect = pygame.Rect(grid_left, grid_top, grid_width, grid_height)
-
-        self.item_grid = ItemGrid(
-            draw_space=grid_rect,
-            font=self.font,
-            padding=1
-        )
+        lft_w = int((self.draw_space.width + 15) / 2)
+        pddng_x = 5
+        grd_lft = self.draw_space.left + lft_w + pddng_x
+        grd_tp = self.draw_space.top + 8
+        grd_wdth = self.draw_space.right - pddng_x - grd_lft
+        grd_hght = self.draw_space.height - 16
+        grd_rct = pygame.Rect(grd_lft, grd_tp, grd_wdth, grd_hght)
+        self.item_grid = ItemGrid(draw_space=grd_rct, font=self.font, padding=1)
         self._update_grid()
-
     def _update_grid(self):
-        """Update the item grid with the stats of the currently selected category."""
+        """# test rapidi"""
+        '# boh, sembra funzionare'
         if 0 <= self.selected_category < len(self.categories):
-            selected_cat = self.categories[self.selected_category]
-            entries = [{"label": k, "value": v} for k, v in selected_cat["stats"]]
+            slctd_ct = self.categories[self.selected_category]
+            ntrs = [{'label': k, 'value': v} for k, v in slctd_ct['stats']]
             if self.item_grid:
-                self.item_grid.update(entries)
-
-    def scroll(self, direction: bool):
-        """Scroll between categories."""
-        prev_index = self.selected_category
-        if direction:  # Up
+                self.item_grid.update(ntrs)
+    def scroll(self, direction):
+        prv_ndx = self.selected_category
+        if direction:
             if self.selected_category > 0:
                 self.selected_category -= 1
-        else:  # Down
-            if self.selected_category < len(self.categories) - 1:
-                self.selected_category += 1
-
-        if prev_index != self.selected_category:
+        elif self.selected_category < len(self.categories) - 1:
+            self.selected_category += 1
+        if prv_ndx != self.selected_category:
             self._update_grid()
 
     def select_item(self):
         return True
-
     def render(self):
-        left_margin = self.draw_space.left
-        row_h = self.font.get_linesize() + 6
-
-        # --- LEFT PANEL ---
-        left_w = int((self.draw_space.width + 15) / 2)
+        lft_mrgn = self.draw_space.left
+        rw_h = self.font.get_linesize() + 6
+        lft_w = int((self.draw_space.width + 15) / 2)
         y = self.draw_space.top + 8
-
-        pip_light = getattr(settings, 'PIP_BOY_LIGHT', (0, 255, 0))
-
+        pp_lght = getattr(settings, 'PIP_BOY_LIGHT', (0, 255, 0))
         for idx, cat in enumerate(self.categories):
-            item_rect = pygame.Rect(left_margin, y, left_w, row_h - 2)
-
+            tm_rct = pygame.Rect(lft_mrgn, y, lft_w, rw_h - 2)
             if idx == self.selected_category:
-                pygame.draw.rect(self.screen, pip_light, item_rect)
-                text_color = (0, 0, 0)
+                pygame.draw.rect(self.screen, pp_lght, tm_rct)
+                txt_clr = (0, 0, 0)
             else:
-                text_color = pip_light
-
-            # Text left list
-            cat_surf = self.font.render(cat["name"], True, text_color)
-            cat_rect = cat_surf.get_rect(midleft=(left_margin + 11, item_rect.centery))
-            self.screen.blit(cat_surf, cat_rect)
-
-            y += row_h
-
-        # --- RIGHT PANEL (Item Grid) ---
+                txt_clr = pp_lght
+            ct_srf = self.font.render(cat['name'], True, txt_clr)
+            ct_rct = ct_srf.get_rect(midleft=(lft_mrgn + 11, tm_rct.centery))
+            self.screen.blit(ct_srf, ct_rct)
+            y += rw_h
         if self.item_grid:
             self.item_grid.render(self.screen)
-
-
-# Alias for backward compatibility or easier imports with tab_manager.py
 StatsTab = StatTab
